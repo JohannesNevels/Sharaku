@@ -13,13 +13,13 @@ extension UIView {
 extension UIViewController {
     func removeFromContainer() {
         guard parent != nil else { return }
-        willMove(toParentViewController: nil)
+        willMove(toParent: nil)
         view.removeFromSuperview()
-        removeFromParentViewController()
+        removeFromParent()
     }
 
     func add(to viewController: UIViewController, container: UIView) {
-        viewController.addChildViewController(self)
+        viewController.addChild(self)
         container.add(view: view)
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: container.topAnchor),
@@ -32,7 +32,7 @@ extension UIViewController {
 
 public final class ContainerViewController: UIViewController {
     public var didFinishWithImage: (UIImage) -> Void = { _ in }
-    public var didCancel: () -> Void = { _ in }
+    public var didCancel: () -> Void = {  }
     private let filterViewController: SHViewController
     private let cropViewController: CropViewController
     private let containerView = UIView()
@@ -139,7 +139,7 @@ public final class ContainerViewController: UIViewController {
         crop.addTarget(self, action: #selector(ContainerViewController.showCrop), for: .touchUpInside)
     }
 
-    func showFilter() {
+    @objc func showFilter() {
         if let image = cropViewController.croppedImage {
             filterViewController.image = image
         }
@@ -149,14 +149,14 @@ public final class ContainerViewController: UIViewController {
         crop.isSelected = false
     }
 
-    func showCrop() {
+    @objc func showCrop() {
         filterViewController.removeFromContainer()
         cropViewController.add(to: self, container: containerView)
         filter.isSelected = false
         crop.isSelected = true
     }
 
-    func didTapNext() {
+    @objc func didTapNext() {
         func sendImageFromFilter() {
             guard let image = filterViewController.imageView?.image else {
                 assertionFailure()
@@ -173,7 +173,7 @@ public final class ContainerViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    func didTapBack() {
+    @objc @objc func didTapBack() {
         didCancel()
     }
 }
