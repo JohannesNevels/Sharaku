@@ -13,13 +13,13 @@ extension UIView {
 extension UIViewController {
     func removeFromContainer() {
         guard parent != nil else { return }
-        willMove(toParent: nil)
+        willMove(toParentViewController: nil)
         view.removeFromSuperview()
-        removeFromParent()
+        removeFromParentViewController()
     }
 
     func add(to viewController: UIViewController, container: UIView) {
-        viewController.addChild(self)
+        viewController.addChildViewController(self)
         container.add(view: view)
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: container.topAnchor),
