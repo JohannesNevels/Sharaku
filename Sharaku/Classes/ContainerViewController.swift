@@ -173,7 +173,7 @@ public final class ContainerViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    @objc @objc func didTapBack() {
+    @objc func didTapBack() {
         didCancel()
     }
 }
